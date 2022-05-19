@@ -23,8 +23,8 @@ class CategoriesCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
             TextEditorField::new('description'),
-            ImageField::new('image')->setBasePath('/public/assets/uploads/categories/')
-                                    ->setUploadDir('/public/assets/uploads/categories/')
+            ImageField::new('image')->setBasePath('/assets/uploads/categories/')
+                                    ->setUploadDir('/assets/uploads/categories/')
                                     ->setUploadedFileNamePattern('[randomhash].[extension]')
                                     ->setRequired(false),
         ];

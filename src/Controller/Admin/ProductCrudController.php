@@ -8,7 +8,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -25,16 +27,19 @@ class ProductCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
-            TextEditorField::new('description'),
-            TextEditorField::new('moreInformation'),
+            SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex(),
+            TextEditorField::new('description')->hideOnIndex(),
+            TextEditorField::new('moreInformation')->hideOnIndex(),
             MoneyField::new('price')->setCurrency('USD'),
-            BooleanField::new('isBestSeller'),
-            BooleanField::new('isNewArival'),
-            BooleanField::new('isFeatured'),
-            BooleanField::new('isSpecialOffer'),
+            IntegerField::new('quantity'),
+            TextField::new('tags'),
+            BooleanField::new('isBestSeller', 'Best Seller'),
+            BooleanField::new('isNewArival', 'New Arrival'),
+            BooleanField::new('isFeatured', 'Featured'),
+            BooleanField::new('isSpecialOffer', 'Special Offer'),
             AssociationField::new('category'),
-            ImageField::new('image')->setBasePath('../public/assets/uploads/products')
-                                    ->setUploadDir('public/assets/uploads/products')
+            ImageField::new('image')->setBasePath('/assets/uploads/products/')
+                                    ->setUploadDir('/assets/uploads/products/')
                                     ->setUploadedFileNamePattern('[randomhash].[extension]')
                                     ->setRequired(false),
         ];
