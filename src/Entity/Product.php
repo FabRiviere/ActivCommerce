@@ -45,9 +45,6 @@ class Product
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'products')]
     private $category;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: RelatedProduct::class)]
-    private $relatedProducts;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ReviewsProduct::class)]
     private $reviewsProducts;
 
@@ -65,9 +62,7 @@ class Product
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
-        
-        $this->relatedProducts = new ArrayCollection();
+        $this->category = new ArrayCollection(); 
         $this->reviewsProducts = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
@@ -209,36 +204,6 @@ class Product
         return $this;
     }
 
-
-    /**
-     * @return Collection<int, RelatedProduct>
-     */
-    public function getRelatedProducts(): Collection
-    {
-        return $this->relatedProducts;
-    }
-
-    public function addRelatedProduct(RelatedProduct $relatedProduct): self
-    {
-        if (!$this->relatedProducts->contains($relatedProduct)) {
-            $this->relatedProducts[] = $relatedProduct;
-            $relatedProduct->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelatedProduct(RelatedProduct $relatedProduct): self
-    {
-        if ($this->relatedProducts->removeElement($relatedProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($relatedProduct->getProduct() === $this) {
-                $relatedProduct->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ReviewsProduct>
