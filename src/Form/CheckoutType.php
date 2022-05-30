@@ -33,6 +33,7 @@ class CheckoutType extends AbstractType
             ->add('informations', TextareaType::class, [
                 'required' => false,
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -40,6 +41,9 @@ class CheckoutType extends AbstractType
         $resolver->setDefaults([
             // Configure your form options here
             'user' => array(),
+            
+            
+            
         ]);
     }
 }

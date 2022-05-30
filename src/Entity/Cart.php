@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
+use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ORM\Table(name: '`order`')]
-class Order
+#[ORM\Entity(repositoryClass: CartRepository::class)]
+#[ORM\Table(name: '`Cart`')]
+class Cart
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,10 +40,10 @@ class Order
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderDetails::class)]
-    private $orderDetails;
+    #[ORM\OneToMany(mappedBy: 'Carts', targetEntity: CartDetails::class)]
+    private $CartDetails;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Carts')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
@@ -59,12 +59,9 @@ class Order
     #[ORM\Column(type: 'float')]
     private $subTotalTTC;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $StripeCheckoutSessionId;
-
     public function __construct()
     {
-        $this->orderDetails = new ArrayCollection();
+        $this->CartDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,20 +123,20 @@ class Order
     }
 
     public function setDeliveryAddress(string $deliveryAddress): self
-    {                                 
+    {
         $this->deliveryAddress = $deliveryAddress;
-        
+
         return $this;
     }
 
-    public function getIsPaid(): ?bool
+    public function isIsPaid(): ?bool
     {
         return $this->isPaid;
     }
 
     public function setIsPaid(bool $isPaid): self
     {
-        $this->isPaid = $isPaid;                
+        $this->isPaid = $isPaid;
 
         return $this;
     }
@@ -169,29 +166,29 @@ class Order
     }
 
     /**
-     * @return Collection<int, OrderDetails>
+     * @return Collection<int, CartDetails>
      */
-    public function getOrderDetails(): Collection
+    public function getCartDetails(): Collection
     {
-        return $this->orderDetails;
+        return $this->CartDetails;
     }
 
-    public function addOrderDetail(OrderDetails $orderDetail): self
+    public function addCartDetail(CartDetails $CartDetail): self
     {
-        if (!$this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails[] = $orderDetail;
-            $orderDetail->setOrders($this);
+        if (!$this->CartDetails->contains($CartDetail)) {
+            $this->CartDetails[] = $CartDetail;
+            $CartDetail->setCarts($this);
         }
 
         return $this;
     }
 
-    public function removeOrderDetail(OrderDetails $orderDetail): self
+    public function removeCartDetail(CartDetails $CartDetail): self
     {
-        if ($this->orderDetails->removeElement($orderDetail)) {
+        if ($this->CartDetails->removeElement($CartDetail)) {
             // set the owning side to null (unless already changed)
-            if ($orderDetail->getOrders() === $this) {
-                $orderDetail->setOrders(null);
+            if ($CartDetail->getCarts() === $this) {
+                $CartDetail->setCarts(null);
             }
         }
 
@@ -254,18 +251,6 @@ class Order
     public function setSubTotalTTC(float $subTotalTTC): self
     {
         $this->subTotalTTC = $subTotalTTC;
-
-        return $this;
-    }
-
-    public function getStripeCheckoutSessionId(): ?string
-    {
-        return $this->StripeCheckoutSessionId;
-    }
-
-    public function setStripeCheckoutSessionId(?string $StripeCheckoutSessionId): self
-    {
-        $this->StripeCheckoutSessionId = $StripeCheckoutSessionId;
 
         return $this;
     }

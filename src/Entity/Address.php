@@ -158,12 +158,12 @@ class Address
     {
         $result = $this->fullname."[spr]";
         if($this->getCompany()) {
-            $result = $this->company."[spr]";
+            $result .= $this->company."[spr]";
         }
-        $result = $this->address."[spr]";
-        $result = $this->complement."[spr]";
-        $result = $this->codePostal." - ".$this->city."[spr]";
-        $result = $this->country."[spr]";
+        $result .= $this->address."[spr]";
+        $result .= $this->complement."[spr]";
+        $result .= $this->codePostal." - ".$this->city."[spr]";
+        $result .= $this->country."[spr]";
 
         return $result;
     }

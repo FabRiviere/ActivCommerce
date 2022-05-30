@@ -12,6 +12,7 @@
         <meta name="keywords" content="sites_web,sites_e-commerce,blogs,créations_web">
         <link rel="stylesheet" href="/assets/style.css">
         {% block stylesheets %}{% endblock %}
+        {% block scriptStripe %}{% endblock %}
     </head>
     <body>
         {% include "partials/header.html.twig" %}
@@ -22,7 +23,6 @@
 
         {% include "partials/footer.html.twig" %}
 
-        {% block javascripts %}{% endblock %}
 
         <script src="/assets/js/jquery-1.12.4.min.js"></script> 
         <script src="/assets/js/popper.min.js"></script>
@@ -38,5 +38,6 @@
         <script src="/assets/js/slick.min.js"></script>
         <script src="/assets/js/jquery.elevatezoom.js"></script>
         <script src="/assets/js/scripts.js"></script>
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
