@@ -38,15 +38,15 @@
 				</div>
 				<div class="col-lg-9 col-md-8">
 
-                    {% for message in app.flashes('address_message') %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        
-                    {% endfor %}
+					{% for message in app.flashes('address_message') %}
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+					{% endfor %}
 
 
 					<div class="tab-content dashboard_content">
@@ -65,6 +65,10 @@
 										and
 										<a href="javascript:void(0);" onclick="$('#account-detail-tab').trigger('click')">edit your password and account details.</a>
 									</p>
+									{% if is_granted('ROLE_ADMIN') %}
+										<a href="{{ path('admin')}}" target="_blank" class="btn btn-fill-out">Access the Backoffice</a>
+									
+									{% endif %}
 								</div>
 							</div>
 						</div>
@@ -73,41 +77,49 @@
 								<div class="card-header">
 									<h3>Orders</h3>
 								</div>
-								<div class="card-body">
-									<div class="table-responsive">
-										<table class="table">
-											<thead>
-												<tr>
-													<th>Order</th>
-													<th>Date</th>
-													<th>Status</th>
-													<th>Total</th>
-													<th>Actions</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>#1234</td>
-													<td>March 15, 2020</td>
-													<td>Processing</td>
-													<td>$78.00 for 1 item</td>
-													<td>
-														<a href="#" class="btn btn-fill-out btn-sm">View</a>
-													</td>
-												</tr>
-												<tr>
-													<td>#2366</td>
-													<td>June 20, 2020</td>
-													<td>Completed</td>
-													<td>$81.00 for 1 item</td>
-													<td>
-														<a href="#" class="btn btn-fill-out btn-sm">View</a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
+								{% if orders %}
+
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table">
+												<thead>
+													<tr>
+														<th>Order</th>
+														<th>Date</th>
+														<th>Status</th>
+														<th>Total</th>
+														<th>Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for order in orders %}
+														<tr>
+															<td>{{ order.id }}</td>
+															<td>{{ order.createdAt | date('d/m/Y') }}</td>
+															<td>Processing</td>
+															<td>${{ order.subTotalTTC/100 }}
+																for
+																{{ order.quantity }}
+																item</td>
+															<td>
+																<a href="{{ path('account_order_details',{'id':order.id}) }}" class="btn btn-fill-out btn-sm">View</a>
+															</td>
+														</tr>
+
+													{% endfor %}
+
+												</tbody>
+											</table>
+										</div>
 									</div>
-								</div>
+
+								{% else %}
+									<div>Sorry
+										{{ app.user.fullName }}. You have not yet placed an order.
+									</div>
+
+								{% endif %}
+
 							</div>
 						</div>
 						<div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
@@ -117,44 +129,46 @@
 								</div>
 							</div>
 							<div class="row">
-                                {% if app.user.addresses %}
-                                {% set index = 0 %}    
-                                    {% for address in app.user.addresses %}
-                                    {% set index = index +1 %}
-                                        <div class="col-lg-6">
-                                            <div class="card mb-3 mb-lg-0">
-                                                <div class="card-header">
-                                                    <h3>
-                                                        Your Address # {{ index }}
-                                                    </h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <address>
-                                                        {{ address.fullname }}<br>
-                                                        {{ address.address }}
-                                                        <br>
-                                                        {{ address.complement }}
-                                                        <br>
-                                                        {{ address.city }}
-                                                        <br>
-                                                        {{ address.codePostal}}<br>
-                                                        {{ address.country }}
+								{% if app.user.addresses %}
+									{% set index = 0 %}
+									{% for address in app.user.addresses %}
+										{% set index = index +1 %}
+										<div class="col-lg-6">
+											<div class="card mb-3 mb-lg-0">
+												<div class="card-header">
+													<h3>
+														Your Address #
+														{{ index }}
+													</h3>
+												</div>
+												<div class="card-body">
+													<address>
+														{{ address.fullname }}<br>
+														{{ address.address }}
+														<br>
+														{{ address.complement }}
+														<br>
+														{{ address.city }}
+														<br>
+														{{ address.codePostal}}<br>
+														{{ address.country }}
 
-                                                    </address>
-                                                    <div class="btn-group">
-                                                        <a href="{{ path('app_address_edit', {'id': address.id}) }}" class="btn btn-success">Edit</a>
-                                                        {{ include('address/_delete_form.html.twig')}}
+													</address>
+													<div class="btn-group">
+														<a href="{{ path('app_address_edit', {'id': address.id}) }}" class="btn btn-success">Edit</a>
+														{{ include('address/_delete_form.html.twig')}}
 
-                                                    </div>
+													</div>
 
-                                                </div>
-                                            </div>
-                                        </div>                                       
-                                    {% endfor %}
+												</div>
+											</div>
+										</div>
+									{% endfor %}
 
-                                {% else %}
-                                    <p>Sorry you havent added an address to your acccount yet ! </p>
-                                {% endif %}
+								{% else %}
+									<p>Sorry you havent added an address to your acccount yet !
+									</p>
+								{% endif %}
 
 
 							</div>

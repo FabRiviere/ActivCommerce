@@ -19,7 +19,7 @@ class StripeSuccessPaymentController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        if($order->getIsPaid()) {
+        if($order->isIsPaid()) {
             // commande payée
             $order->setIsPaid(true);
             $manager->flush();

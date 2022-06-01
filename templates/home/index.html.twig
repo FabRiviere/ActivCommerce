@@ -3,9 +3,15 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+
+    {% if homeSlider %}
+         {{ include("partials/home_slider.html.twig", { 'slider': homeSlider}) }}
+    {% else %}
     {# partial title_section #}
     {{ include("partials/title_section.html.twig", { 'name': 'Home Page'}) }}
-
+        
+    
+    {% endif %}
 
     <div class="container">
         <div class="section small_pt pb_70">
