@@ -25,6 +25,21 @@ class ContactController extends AbstractController
             $contactRepository->add($contact, true);
 
             // Envoi Email
+            // Création de l'objet métier User
+            // $user = (new User()) // Faire un use
+            //         ->setEmail('activcommerce@gmail.com') //email administrateur
+            //         ->setFirstname('ActivCommerce')
+            //         ->setLastname('Shopping');
+            // // Création de l'objet métier Email
+            // $email = (new EmailModel()) // Faire un use
+            //         ->setTitle("Hello ".$user->getFullName())
+            //         ->setSubject("New Contact From your Website")
+            //         ->setContent("<br>From : ".$contact->getEmail()
+            //                     ."<br> Name : ".$contact->getName()
+            //                     ."<br> Subject : ".$contact->getSubject()
+            //                     ."<br><br>".$contact->getContent());
+            // // Utilisation du service EmailSender après l'avoir injecter et fait un use
+            // $emailsender->sendEmailNotificationByMailjet($user,$email);
 
             // Remise à zéro des champs du formulaire après envoi
             $contact = new Contact();

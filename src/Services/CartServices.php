@@ -99,6 +99,15 @@ class CartServices {
             $product = $this->repoProduct->find($id);
             // Produit récupéré avec succès
             if($product) {
+                // Vérification si la quantité du produit est disponible
+                if($quantity > $product->getQuantity()){
+                    // Si le client achéte + de produit que nous avons, on change
+                    // la quantité par la quantité dont on dispose
+                    $quantity = $product->getQuantity();
+                    // Ns mettons à jour la panier
+                    $cart[$id] = $quantity;
+                    $this->updateCart($cart);
+                }
                 $fullCart["products"][] = 
                     [
                         'quantity' => $quantity,

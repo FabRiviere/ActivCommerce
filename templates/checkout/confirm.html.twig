@@ -105,7 +105,7 @@
 
  {% block javascripts %}
      <script type="text/javascript">
-     const stripe = Stripe("pk_test_51L4TuZC9wnTTIss49eZaFxIDXwtCOZLV51Co1mRmiXJjolCaCyNESDY3vsfuCqFPzDcISb1vN96VRwRXKs0HyZ1d00MASlZ05x");
+     const stripe = Stripe("{{ apikeypublic }}");
      var checkoutButton = document.getElementById("checkout-button");
      checkoutButton.addEventListener("click", function () {
          fetch("/create-checkout-session/{{ reference }}", {
